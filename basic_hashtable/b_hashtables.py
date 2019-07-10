@@ -39,6 +39,10 @@ def hash(string, max):
 # '''
 def hash_table_insert(hash_table, key, value):
     key_hash = hash(key, hash_table.capacity)
+
+    if hash_table.storage[key_hash] is not None:
+        print("Warning, index " + str(key_hash) + " is not empty")
+
     hash_table.storage[key_hash] = value
 
 
@@ -49,7 +53,12 @@ def hash_table_insert(hash_table, key, value):
 # '''
 def hash_table_remove(hash_table, key):
     key_hash = hash(key, hash_table.capacity)
-    hash_table.storage[key_hash] = None
+
+    if (hash_table.storage[key_hash] is None or 
+            hash_table.storage[key_hash].key != key):
+        print("unable to remove item with key " + key)
+    else: 
+        hash_table.storage[key_hash] = None
 
 
 # '''
@@ -59,7 +68,13 @@ def hash_table_remove(hash_table, key):
 # '''
 def hash_table_retrieve(hash_table, key):
     key_hash = hash(key, hash_table.capacity)
-    return hash_table.storage[key_hash]
+
+    if hash_table.storage[key_hash] is not None:
+        if hash_table.storage[key_hash].key == key:
+            return hash_table.storage[key_hash]
+
+    print("unable to find value with key " + key)
+    return None
 
 
 def Testing():
