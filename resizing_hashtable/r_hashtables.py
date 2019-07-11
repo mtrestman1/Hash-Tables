@@ -17,14 +17,18 @@ class LinkedPair:
 # '''
 class HashTable:
     def __init__(self, capacity):
-        pass
+        self.capacity = capacity
+        self.storage = [None] * self.capacity
 
 
 # '''
 # Research and implement the djb2 hash function
 # '''
 def hash(string, max):
-    pass
+    hash = 5381
+    for x in string:
+        hash = ((hash << 5) + hash) + ord(x)
+    return hash % max
 
 
 # '''
@@ -33,7 +37,21 @@ def hash(string, max):
 # Hint: Used the LL to handle collisions
 # '''
 def hash_table_insert(hash_table, key, value):
-    pass
+    index = hash(key, hash_table.capacity)
+    if hash_table.storage[index]:
+        current = hash_table.storage[index]
+
+        while current.next:
+            if current.key == key:
+                current.value = value
+                return 
+            else:
+                current.next
+                
+        current.next = LinkedPair(key, value)
+        
+    else:
+        hash_table.storage[index] = LinkedPair(key, value)
 
 
 # '''
@@ -42,7 +60,13 @@ def hash_table_insert(hash_table, key, value):
 # If you try to remove a value that isn't there, print a warning.
 # '''
 def hash_table_remove(hash_table, key):
-    pass
+    index = hash(key, hash_table.capacity)
+
+    if (hash_table.storage[index] is None or 
+            hash_table.storage[index].key != key):
+        print("unable to remove item with key " + key)
+    else: 
+        hash_table.storage[index] = None
 
 
 # '''
@@ -51,7 +75,14 @@ def hash_table_remove(hash_table, key):
 # Should return None if the key is not found.
 # '''
 def hash_table_retrieve(hash_table, key):
-    pass
+    index = hash(key, hash_table.capacity)
+    temp = hash_table.storage[index]
+    while temp:
+        if temp.key == key:
+            return temp.value
+        else:
+            temp = temp.next
+    return None
 
 
 # '''
